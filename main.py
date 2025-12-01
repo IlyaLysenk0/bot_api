@@ -16,7 +16,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from bot_db import Session, Active_users, Price, init_db
 
-TOKEN = "8323100514:AAHtvYCJJlnZx2HG4BPno2z8Wk4sBiCRqpY"
+TOKEN = "8421330855:AAElG01w1GDHVbXDlmOo30tlLBOgyovk_Kc"
 admin_chat_id = 1002506955
 
 logging.basicConfig(level=logging.INFO)
