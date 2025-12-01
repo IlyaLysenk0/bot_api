@@ -3,6 +3,7 @@
 #Сохранение сделок, статистика по сделаным сделкам, история сделок
 import os
 from aiohttp import web
+import logging
 import aiohttp
 import logging
 import asyncio
@@ -15,7 +16,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from bot_db import Session, Active_users, Price, init_db
 
-TOKEN = "7786410391:AAGen2ygv6dHZW-bhCJww0j7bHbHJ6NDXY0"
+TOKEN = "7017065177:AAEnO-ngzeNNt75hN-isFNdEbocALc3K_LQ"
 admin_chat_id = 1002506955
 
 logging.basicConfig(level=logging.INFO)
@@ -80,6 +81,7 @@ async def api_info(str_format=False):
 
         return info_dict
     except Exception as e:
+        logging.error(f"Сталася помилка: {e}", exc_info=True)
         all_prodlems.append(str(e))
 
 
@@ -91,6 +93,7 @@ def add_to_bd(api:dict):
                 ss.add(new_add)
             ss.commit()
     except Exception as e:
+        logging.error(f"Сталася помилка: {e}", exc_info=True)
         all_prodlems.append(str(e))
 
 async def get_info(chat_id: int, in_to_db=False):
@@ -104,7 +107,7 @@ async def get_info(chat_id: int, in_to_db=False):
             add_to_bd(api_result)
 
     except Exception as e:
-        print(f"Не вдалося надіслати повідомлення користувачу {chat_id}: {e}")
+        logging.error(f"Сталася помилка: {e}", exc_info=True)
         all_prodlems.append(f"Не вдалося надіслати повідомлення користувачу {chat_id}: {e}")
 
 
@@ -120,6 +123,7 @@ async def cmd_start(message: types.Message):
                 ss.commit()
         await message.answer("""Готово!\nБот отправляет курс каждые 4 часа после последней отправки курса. Проверить курс "в моменте" можно по кнопке "Курс" или по команде /check""",reply_markup=main_menu)
     except Exception as e:
+        logging.error(f"Сталася помилка: {e}", exc_info=True)
         all_prodlems.append(str(e))
 
 @dp.message(Command("check"))
@@ -144,6 +148,16 @@ async def check(message: types.Message):
         api_result = await api_info(str_format=True)
         await message.answer(api_result)
     except Exception as e:
+        logging.error(f"Сталася помилка: {e}", exc_info=True)
+        all_prodlems.append(str(e))
+
+@dp.message(Command("check_free"))
+async def check_free(message: types.Message):
+    try:
+        api_result = await api_info(str_format=True)
+        await message.answer(api_result)
+    except Exception as e:
+        logging.error(f"Сталася помилка: {e}", exc_info=True)
         all_prodlems.append(str(e))
 
 @dp.message(Command("save_problems"))
@@ -160,6 +174,7 @@ async def save_problems(message: types.Message):
             else:
                 await message.answer('Помилок немає')
     except Exception as e:
+        logging.error(f"Сталася помилка: {e}", exc_info=True)
         all_prodlems.append(str(e))
 
 
