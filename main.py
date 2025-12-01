@@ -200,7 +200,7 @@ async def save_problems(message: types.Message):
 #     await dp.start_polling(bot)
 
 async def main():
-    # init_db() # Якщо використовуєш
+    init_db() # Якщо використовуєш
     scheduler.start()
 
     # Запускаємо веб-сервер, щоб Render бачив активність
